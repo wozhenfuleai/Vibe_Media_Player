@@ -1,34 +1,44 @@
 import QtQuick
-import QtQuick.VirtualKeyboard
+import QtQuick.Controls
+import QtQuick.Layouts
 
-Window {
-    id: window
-    width: 640
-    height: 480
+ApplicationWindow {
     visible: true
-    title: qsTr("Hello World")
+    width: 1000
+    height: 800
+    title: "Vibe Media Player"
+    color: "#121212"
 
-    InputPanel {
-        id: inputPanel
-        z: 99
-        y: window.height
-        width: window.width
+    // 播放器主体背景
+    Rectangle {
+        anchors.fill: parent
+        anchors.margins: 0
+        color: "#000000"
+        border.color: "#ffffff"
+        border.width: 1
+        // 整体布局
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: 16
+            spacing: 0
 
-        states: State {
-            name: "visible"
-            when: inputPanel.active
-            PropertyChanges {
-                inputPanel.y: window.height - inputPanel.height
+
+            TopTitleBar {
+                Layout.preferredHeight: 30
+                Layout.fillWidth: true
             }
-        }
-        transitions: Transition {
-            from: ""
-            to: "visible"
-            reversible: true
-            NumberAnimation {
-                properties: "y"
-                easing.type: Easing.InOutQuad
+
+            DisplayArea {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
             }
+
+            BottomControlBar {
+                Layout.fillWidth: true
+                spacing: 20
+            }
+
+
         }
     }
 }
