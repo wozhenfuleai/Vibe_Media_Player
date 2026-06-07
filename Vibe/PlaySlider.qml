@@ -3,7 +3,6 @@ import QtQuick.Controls
 import QtQuick.Layouts
 RowLayout {
 
-
     // 播放功能
     Button {
         text: "▶"

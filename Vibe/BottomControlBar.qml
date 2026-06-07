@@ -2,7 +2,8 @@ import QtQuick.Controls
 import QtQuick
 import QtQuick.Layouts
 
-// 底部控制栏
+
+// 底部控制栏BcakControlBar
 ColumnLayout {
 
 //               anchors.margins: 8
@@ -13,3 +14,5 @@ ColumnLayout {
     VolumeSlider {
     }
 }
+
+//TopTitleBar

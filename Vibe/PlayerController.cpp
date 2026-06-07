@@ -1,4 +1,4 @@
-#include "playercontroller.h"
+#include "PlayerController.h"
 #include <QFileInfo>
 #include <QAudioOutput>
 #include <QObject>
