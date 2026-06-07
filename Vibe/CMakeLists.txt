@@ -19,6 +19,11 @@ qt_add_qml_module(appVibe
     URI Vibe
     QML_FILES
         Main.qml
+        QML_FILES PlaySlider.qml
+        QML_FILES VolumeSlider.qml
+        QML_FILES DisplayArea.qml
+        QML_FILES TopTitleBar.qml
+        QML_FILES BottomControlBar.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
