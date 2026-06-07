@@ -1,0 +1,28 @@
+[
+    {
+        "moduleFiles": [
+            {
+                "entries": [
+                    {
+                        "codegenSuccessful": true,
+                        "column": 23,
+                        "durationMicroseconds": 134,
+                        "errorMessage": "",
+                        "functionName": "fill",
+                        "line": 14
+                    },
+                    {
+                        "codegenSuccessful": true,
+                        "column": 27,
+                        "durationMicroseconds": 67,
+                        "errorMessage": "",
+                        "functionName": "fill",
+                        "line": 21
+                    }
+                ],
+                "filePath": "/root/GitHub/Vibe_Media_Player_Clone_Wu/Vibe/Main.qml"
+            }
+        ],
+        "moduleId": "Vibe(appVibe)"
+    }
+]
