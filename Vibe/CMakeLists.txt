@@ -4,7 +4,7 @@ project(Vibe VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick  Multimedia)
+find_package(Qt6 REQUIRED COMPONENTS Quick Multimedia QuickDialogs2)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
@@ -19,17 +19,17 @@ qt_add_executable(appVibe
 qt_add_qml_module(appVibe
     URI Vibe
     QML_FILES
-        Main.qml
-        QML_FILES PlaySlider.qml
-        QML_FILES VolumeSlider.qml
-        QML_FILES DisplayArea.qml
-        QML_FILES TopTitleBar.qml
-        QML_FILES BottomControlBar.qml
-        SOURCES
-        SOURCES
-        QML_FILES Actions.qml
-        QML_FILES Content.qml
-        QML_FILES Dialog.qml
+        Window.qml
+        PlaySlider.qml
+        VolumeSlider.qml
+        TopTitleBar.qml
+        BottomControlBar.qml
+        Controller.qml
+        Action.qml
+        Dialog.qml
+    SOURCES
+        PlayerController.cpp
+        PlayerController.h
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -46,6 +46,7 @@ set_target_properties(appVibe PROPERTIES
 target_link_libraries(appVibe
     PRIVATE Qt6::Quick
     Qt6::Multimedia
+    Qt6::QuickDialogs2
 )
 
 include(GNUInstallDirs)

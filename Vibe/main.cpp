@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
                 []() { QCoreApplication::exit(-1); },
                 Qt::QueuedConnection);
         // 这个就是从URI中加载这个qml文件进行渲染
-        engine.loadFromModule("Vibe", "Main");
+        engine.loadFromModule("Vibe", "Window");
 
         return app.exec();
 }
