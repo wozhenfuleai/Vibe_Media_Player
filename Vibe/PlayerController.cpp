@@ -1,6 +1,7 @@
 #include "PlayerController.h"
 #include <QFileInfo>
 #include <QAudioOutput>
+#include <QProcess>
 #include <QObject>
 #include <QString>
 #include <QUrl>
@@ -9,7 +10,10 @@ PlayerController::PlayerController(QObject *parent)
     : QObject{parent}
     , m_player(new QMediaPlayer(this))
     , m_audioOutput(new QAudioOutput(this))
+    , m_probeProcess(new QProcess(this))
     , m_isMediaLoaded(false)
+    , m_shouldAutoPlay(false)
+    , m_probeProgram("ffprobe")
 {
     // 将音频输出组件绑定到播放器
     m_player->setAudioOutput(m_audioOutput);
@@ -22,6 +26,10 @@ PlayerController::PlayerController(QObject *parent)
     connect(m_player, &QMediaPlayer::durationChanged, this, &PlayerController::onDurationChanged);
     // 这个连接用于监听媒体文件的加载状态
     connect(m_player, &QMediaPlayer::mediaStatusChanged, this, &PlayerController::onMediaStatusChanged);
+    connect(m_probeProcess,
+            qOverload<int, QProcess::ExitStatus>(&QProcess::finished),
+            this,
+            &PlayerController::onProbeFinished);
 }
 
 // ==========================================
@@ -66,6 +74,14 @@ int PlayerController::volume() const {
     return qRound(m_audioOutput->volume() * 100);
 }
 
+QString PlayerController::mediaInfoJson() const {
+    return m_mediaInfoJson;
+}
+
+QString PlayerController::lastError() const {
+    return m_lastError;
+}
+
 // ==========================================
 // Q_INVOKABLE 方法实现 (供 QML 调用)
 // ==========================================
@@ -86,8 +102,14 @@ void PlayerController::loadFile(const QUrl &url) {
     m_player->setSource(url);
 }
 
+void PlayerController::loadAndPlay(const QUrl &url) {
+    if (url.isEmpty()) return;
+    m_shouldAutoPlay = true;
+    loadFile(url);
+}
+
 void PlayerController::play() {
-    if (m_isMediaLoaded) m_player->play();
+    m_player->play();
 }
 
 void PlayerController::pause() {
@@ -117,6 +139,45 @@ void PlayerController::setPositionPercent(int pct) {
         // 百分比计算转换回毫秒
         int targetMs = (pct * dur) / 100;
         m_player->setPosition(targetMs);
+    }
+}
+
+void PlayerController::probeFile(const QUrl &url) {
+    if (url.isEmpty()) {
+        m_lastError = "未选择文件";
+        emit errorChanged();
+        return;
+    }
+
+    const QString localPath = url.isLocalFile() ? url.toLocalFile() : url.toString();
+    if (localPath.isEmpty()) {
+        m_lastError = "文件路径无效";
+        emit errorChanged();
+        return;
+    }
+
+    if (m_probeProcess->state() != QProcess::NotRunning) {
+        m_probeProcess->kill();
+        m_probeProcess->waitForFinished(1000);
+    }
+
+    m_mediaInfoJson.clear();
+    emit mediaInfoChanged();
+
+    const QStringList args = {
+        "-v", "quiet",
+        "-print_format", "json",
+        "-show_format",
+        "-show_streams",
+        localPath
+    };
+    m_probeProcess->start(m_probeProgram, args);
+}
+
+void PlayerController::setProbeProgram(const QString &program) {
+    const QString trimmed = program.trimmed();
+    if (!trimmed.isEmpty()) {
+        m_probeProgram = trimmed;
     }
 }
 
@@ -161,12 +222,19 @@ void PlayerController::onMediaStatusChanged(QMediaPlayer::MediaStatus status) {
         // 文件不仅存在且音视频轨都解析完毕，可播放
         m_isMediaLoaded = true;
         emit mediaLoaded();
+        if (m_shouldAutoPlay) {
+            m_shouldAutoPlay = false;
+            m_player->play();
+        }
         break;
 
     case QMediaPlayer::InvalidMedia:
         // 文件损坏、格式不支持、或者路径不对
         m_isMediaLoaded = false;
+        m_shouldAutoPlay = false;
         m_currentFileName = "文件格式错误或损坏";
+        m_lastError = "播放器无法加载该媒体文件";
+        emit errorChanged();
         emit mediaLoaded(); // 通知 QML 显示错误信息
         break;
 
@@ -174,6 +242,24 @@ void PlayerController::onMediaStatusChanged(QMediaPlayer::MediaStatus status) {
         // 比如正在缓冲 (LoadingMedia) 等状态，暂不做处理
         break;
     }
+}
+
+void PlayerController::onProbeFinished(int exitCode, QProcess::ExitStatus exitStatus) {
+    const QString stdOut = QString::fromUtf8(m_probeProcess->readAllStandardOutput());
+    const QString stdErr = QString::fromUtf8(m_probeProcess->readAllStandardError());
+
+    if (exitStatus == QProcess::NormalExit && exitCode == 0) {
+        m_mediaInfoJson = stdOut;
+        m_lastError.clear();
+        emit mediaInfoChanged();
+        emit errorChanged();
+        return;
+    }
+
+    m_mediaInfoJson.clear();
+    m_lastError = stdErr.isEmpty() ? "ffprobe 执行失败，请检查是否已安装并加入 PATH" : stdErr.trimmed();
+    emit mediaInfoChanged();
+    emit errorChanged();
 }
 
 
