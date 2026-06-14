@@ -136,3 +136,16 @@
 377	3694	1780819114145067258	CMakeFiles/appVibe.dir/build/C_C_2026_06_07-Debug/.rcc/qmlcache/appVibe_Main_qml.cpp.o	d6a6b2b1373749f5
 376	4171	1780819114144785943	CMakeFiles/appVibe.dir/build/C_C_2026_06_07-Debug/.rcc/qmlcache/appVibe_qmlcache_loader.cpp.o	1d56595062d3f015
 4172	4678	1780819117938292555	appVibe	54df026c17de9022
+8	34	1780825157908495721	.qt/appVibe_qml.txt	28ad72894d9641fd
+8	34	1780825157908495721	/root/GitHub/Vibe_Media_Player_Clone_Wu/Vibe/build/C_C_2026_06_07-Debug/.qt/appVibe_qml.txt	28ad72894d9641fd
+9	136	1780825158012161595	.qt/qml_imports/appVibe_build.cmake	dfcb6099d23cfd17
+9	136	1780825158012161595	/root/GitHub/Vibe_Media_Player_Clone_Wu/Vibe/build/C_C_2026_06_07-Debug/.qt/qml_imports/appVibe_build.cmake	dfcb6099d23cfd17
+137	151	1780825158026495431	.qt/rcc/qrc_appVibe_raw_qml_0.cpp	5d3b455ad7887725
+137	151	1780825158026495431	/root/GitHub/Vibe_Media_Player_Clone_Wu/Vibe/build/C_C_2026_06_07-Debug/.qt/rcc/qrc_appVibe_raw_qml_0.cpp	5d3b455ad7887725
+137	272	1780825158142814096	.rcc/qmlcache/appVibe_Dialog_qml.cpp	7e7149bc9811ac32
+137	272	1780825158142814096	.rcc/qmlcache/appVibe_Dialog_qml.cpp.aotstats	7e7149bc9811ac32
+137	272	1780825158142814096	/root/GitHub/Vibe_Media_Player_Clone_Wu/Vibe/build/C_C_2026_06_07-Debug/.rcc/qmlcache/appVibe_Dialog_qml.cpp	7e7149bc9811ac32
+137	272	1780825158142814096	/root/GitHub/Vibe_Media_Player_Clone_Wu/Vibe/build/C_C_2026_06_07-Debug/.rcc/qmlcache/appVibe_Dialog_qml.cpp.aotstats	7e7149bc9811ac32
+272	319	1780825158149927681	CMakeFiles/appVibe.dir/build/C_C_2026_06_07-Debug/.qt/rcc/qrc_appVibe_raw_qml_0.cpp.o	d18bdc89470fa515
+272	2236	1780825158148495132	CMakeFiles/appVibe.dir/build/C_C_2026_06_07-Debug/.rcc/qmlcache/appVibe_Dialog_qml.cpp.o	a6b40944d0c303d7
+2236	2834	1780825160112490313	appVibe	54df026c17de9022

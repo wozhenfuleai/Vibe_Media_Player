@@ -1,0 +1,14 @@
+-rootPath
+/root/文件搜集/GitHub/Vibe_Media_Player_Clone_Wu/Vibe
+-cmake-output
+-output-file
+/root/文件搜集/GitHub/Vibe_Media_Player_Clone_Wu/Vibe/build/C_C_2026_06_14-Debug/.qt/qml_imports/appVibe_conf.cmake
+-importPath
+/root/文件搜集/GitHub/Vibe_Media_Player_Clone_Wu/Vibe/build/C_C_2026_06_14-Debug/Vibe
+-importPath
+/root/文件搜集/GitHub/Vibe_Media_Player_Clone_Wu/Vibe/build/C_C_2026_06_14-Debug
+-importPath
+/usr/lib/qt6/qml
+-qrcFiles
+/root/文件搜集/GitHub/Vibe_Media_Player_Clone_Wu/Vibe/build/C_C_2026_06_14-Debug/.qt/rcc/qmake_Vibe.qrc
+/root/文件搜集/GitHub/Vibe_Media_Player_Clone_Wu/Vibe/build/C_C_2026_06_14-Debug/.qt/rcc/appVibe_raw_qml_0.qrc

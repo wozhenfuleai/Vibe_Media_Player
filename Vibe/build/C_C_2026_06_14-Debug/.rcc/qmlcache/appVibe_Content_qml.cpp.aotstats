@@ -1,0 +1,20 @@
+[
+    {
+        "moduleFiles": [
+            {
+                "entries": [
+                    {
+                        "codegenSuccessful": false,
+                        "column": 40,
+                        "durationMicroseconds": 3391,
+                        "errorMessage": "Type const QMetaObject does not have a property fileNameFromUrl for calling",
+                        "functionName": "fileName",
+                        "line": 9
+                    }
+                ],
+                "filePath": "/root/文件搜集/GitHub/Vibe_Media_Player_Clone_Wu/Vibe/Content.qml"
+            }
+        ],
+        "moduleId": "Vibe(appVibe)"
+    }
+]

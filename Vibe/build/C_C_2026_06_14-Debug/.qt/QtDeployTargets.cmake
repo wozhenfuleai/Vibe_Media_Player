@@ -1,0 +1,2 @@
+set(__QT_DEPLOY_TARGET_appVibe_FILE /root/文件搜集/GitHub/Vibe_Media_Player_Clone_Wu/Vibe/build/C_C_2026_06_14-Debug/appVibe)
+set(__QT_DEPLOY_TARGET_appVibe_TYPE EXECUTABLE)

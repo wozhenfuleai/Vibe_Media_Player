@@ -1,0 +1,13 @@
+--resource
+/root/文件搜集/GitHub/Vibe_Media_Player_Clone_Wu/Vibe/build/C_C_2026_06_14-Debug/.qt/rcc/qmake_Vibe.qrc
+--resource
+/root/文件搜集/GitHub/Vibe_Media_Player_Clone_Wu/Vibe/build/C_C_2026_06_14-Debug/.qt/rcc/appVibe_raw_qml_0.qrc
+/qt/qml/Vibe/Main.qml
+/qt/qml/Vibe/PlaySlider.qml
+/qt/qml/Vibe/VolumeSlider.qml
+/qt/qml/Vibe/DisplayArea.qml
+/qt/qml/Vibe/TopTitleBar.qml
+/qt/qml/Vibe/BottomControlBar.qml
+/qt/qml/Vibe/Actions.qml
+/qt/qml/Vibe/Content.qml
+/qt/qml/Vibe/Dialog.qml
