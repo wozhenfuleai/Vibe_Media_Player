@@ -20,8 +20,13 @@ qt_add_qml_module(appVibe
     URI Vibe
     QML_FILES
         Main.qml
-        SOURCES PlayerController.cpp
-        SOURCES PlayerController.h
+        Actions.qml
+        Content.qml
+        Dialogs.qml
+        VibePlayer.qml
+    SOURCES
+        PlayerController.cpp
+        PlayerController.h
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

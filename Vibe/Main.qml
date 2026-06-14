@@ -1,155 +1,303 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Dialogs
+import QtCore
+import QtMultimedia
 
 ApplicationWindow {
-    visible: true
-    width: 1000
+    id: window
+    width: 1280
     height: 800
-    title: "Vibe Media Player"
-    color: "#121212"
+    visible: true
+    color: "#090b10"
+    title: player.isMediaLoaded ? qsTr("%1 - Vibe Video Player").arg(player.currentFileName) : qsTr("Vibe Video Player")
 
-    // 播放器主体背景
-    Rectangle {
-        anchors.fill: parent
-        anchors.margins: 0
-        color: "#5E4B75"
-        border.color: "#ffffff"
-        border.width: 1
-        // 整体布局
-        ColumnLayout {
+    PlayerController {
+        id: player
+    }
+
+    FileDialog {
+        id: openDialog
+        title: qsTr("Open Video")
+        currentFolder: StandardPaths.standardLocations(StandardPaths.MoviesLocation)[0]
+        fileMode: FileDialog.OpenFile
+        nameFilters: [
+            qsTr("Video files (*.mp4 *.mkv *.avi *.mov *.webm *.m4v *.flv)"),
+            qsTr("All files (*)")
+        ]
+
+        onAccepted: player.loadAndPlay(selectedFile)
+    }
+
+    Shortcut {
+        sequences: [StandardKey.Open]
+        onActivated: openDialog.open()
+    }
+
+    Shortcut {
+        sequence: "Space"
+        onActivated: player.playPause()
+    }
+
+    Shortcut {
+        sequence: "Media Play"
+        onActivated: player.playPause()
+    }
+
+    Shortcut {
+        sequence: "Media Pause"
+        onActivated: player.playPause()
+    }
+
+    Shortcut {
+        sequence: "Media Stop"
+        onActivated: player.stop()
+    }
+
+    menuBar: MenuBar {
+        Menu {
+            title: qsTr("File")
+            MenuItem {
+                text: qsTr("Open Video...")
+                onTriggered: openDialog.open()
+            }
+            MenuItem {
+                text: qsTr("Quit")
+                onTriggered: Qt.quit()
+            }
+        }
+        Menu {
+            title: qsTr("Playback")
+            MenuItem {
+                text: player.isPlaying ? qsTr("Pause") : qsTr("Play")
+                onTriggered: player.playPause()
+            }
+            MenuItem {
+                text: qsTr("Stop")
+                onTriggered: player.stop()
+            }
+        }
+    }
+
+    header: ToolBar {
+        RowLayout {
             anchors.fill: parent
-            anchors.margins: 16
-            spacing: 0
+            anchors.leftMargin: 16
+            anchors.rightMargin: 16
+            spacing: 12
 
-            // 顶部标题栏
-            RowLayout {
-                Layout.preferredHeight: 50
-                Layout.fillWidth: true
-
-                //todo  将这个提升到垂直区域，并且设置为工具栏，内部包含文件打开功能
-                Button {
-                    text: "<"
-                    background: Rectangle { color: "transparent" }
-                }
-
-                // todo 将这个标签删除， 或者将这个标签显示为当前文件名字
-                Label {
-                    Layout.fillWidth: true
-                    text: "视频播放"
-                    color: "white"
-                    horizontalAlignment: Qt.AlignHCenter
-                }
-                // 提供相应的功能接口，可以预留用作装饰
-                Button {
-                    text: "⋮"
-                    background: Rectangle { color: "transparent" }
-                }
+            ToolButton {
+                text: qsTr("Open")
+                icon.name: "document-open"
+                display: AbstractButton.TextBesideIcon
+                onClicked: openDialog.open()
             }
 
-            // // 分割线
-            // Rectangle {
-            //     Layout.fillWidth: true
-            //     Layout.preferredHeight: 1
-            //     color: "#ffffff"
-            // }
-
-            // 视频显示区域
-            Rectangle {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                color: "#000000"
-                border.color: "#ffffff"
-                border.width: 1
-
-                // 意义不明可以删除
-                Label {
-                    anchors.centerIn: parent
-                    text: "视频播放区域"
-                    color: "#666666"
-                }
-            }
-
-            // // 分割线
-            // Rectangle {
-            //     Layout.fillWidth: true
-            //     Layout.preferredHeight: 1
-            //     color: "#ffffff"
-            // }
-
-            // 底部控制栏
             ColumnLayout {
                 Layout.fillWidth: true
-                Layout.preferredHeight: 90
-                spacing: 12
-                anchors.margins: 8
+                spacing: 2
 
-                // 播放控制行
-                RowLayout {
+                Label {
+                    text: qsTr("Vibe Video Player")
+                    font.pixelSize: 18
+                    font.bold: true
+                    color: "#f3f5f9"
+                }
+
+                Label {
                     Layout.fillWidth: true
-                    spacing: 12
+                    text: player.isMediaLoaded ? player.currentFileName : qsTr("Open a video to start playback")
+                    color: "#9aa6b2"
+                    elide: Text.ElideRight
+                }
+            }
 
-                    // 播放功能
-                    Button {
+            Rectangle {
+                radius: 999
+                color: player.isPlaying ? "#1f5f3a" : "#2a313d"
+                border.color: player.isPlaying ? "#33d17a" : "#465163"
+                border.width: 1
+                implicitWidth: 112
+                implicitHeight: 34
+
+                Label {
+                    anchors.centerIn: parent
+                    text: player.isPlaying ? qsTr("Playing") : qsTr("Paused")
+                    color: "#f3f5f9"
+                    font.pixelSize: 13
+                    font.bold: true
+                }
+            }
+
+            ToolButton {
+                text: qsTr("Quit")
+                icon.name: "application-exit"
+                display: AbstractButton.TextBesideIcon
+                onClicked: Qt.quit()
+            }
+        }
+    }
+
+    background: Rectangle {
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#0f141c" }
+            GradientStop { position: 0.55; color: "#090b10" }
+            GradientStop { position: 1.0; color: "#05070a" }
+        }
+    }
+
+    ColumnLayout {
+        anchors.fill: parent
+        anchors.margins: 18
+        spacing: 14
+
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            radius: 28
+            color: "#000000"
+            border.color: "#253142"
+            border.width: 1
+            clip: true
+
+            VideoOutput {
+                id: videoOutput
+                anchors.fill: parent
+                fillMode: VideoOutput.PreserveAspectFit
+            }
+
+            Component.onCompleted: player.setVideoOutput(videoOutput)
+
+            MouseArea {
+                anchors.fill: parent
+                onDoubleClicked: openDialog.open()
+            }
+
+            Column {
+                anchors.centerIn: parent
+                spacing: 14
+                visible: !player.isMediaLoaded
+
+                Rectangle {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: 88
+                    height: 88
+                    radius: 44
+                    color: "#18202b"
+                    border.color: "#2f3b4d"
+                    border.width: 1
+
+                    Text {
+                        anchors.centerIn: parent
                         text: "▶"
-                        background: Rectangle { color: "transparent" }
-                    }
-
-                    // 设置当前播放进度， 可以删除，因为滑动条更加直观
-                    Label {
-                        text: "00:00"
-                        color: "white"
-                    }
-
-                    // 设置当前播放进度对应上的滑动条，和上方的label可能需要做关联
-                    Slider {
-                        Layout.fillWidth: true
-                        value: 0.3
-                    }
-
-                    // 显示当前播放进度
-                    Label {
-                        text: "04:20"
-                        color: "white"
-                    }
-
-                    // 这个是全屏按钮功能，提供 点击事件 需要优化全屏功能
-                    Button {
-                        text: "⛶"
-                        background: Rectangle { color: "transparent" }
-                        onClicked: {
-                               // 切换全屏 / 退出全屏
-                               if (visibility === Window.FullScreen) {
-                                   visibility = Window.Windowed;  // 退出全屏
-                               } else {
-                                   visibility = Window.FullScreen; // 进入全屏
-                               }
-                        }
+                        color: "#f3f5f9"
+                        font.pixelSize: 32
                     }
                 }
 
-                // 音量控制行
-                //   组成是 ： 按钮，滑动条，以及一个普通的Item用作填充物
+                Text {
+                    width: 420
+                    horizontalAlignment: Text.AlignHCenter
+                    wrapMode: Text.WordWrap
+                    text: qsTr("Open a video file to start playback. Supported formats include MP4, MKV, AVI, MOV, and WebM.")
+                    color: "#d5dbe3"
+                    font.pixelSize: 18
+                }
+            }
+        }
+
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 110
+            radius: 22
+            color: "#111722"
+            border.color: "#243041"
+            border.width: 1
+
+            ColumnLayout {
+                anchors.fill: parent
+                anchors.margins: 16
+                spacing: 10
+
+                Slider {
+                    id: progressSlider
+                    Layout.fillWidth: true
+                    from: 0
+                    to: 100
+                    stepSize: 1
+                    enabled: player.duration > 0
+                    onMoved: player.positionPercent = Math.round(value)
+                }
+
+                Binding {
+                    target: progressSlider
+                    property: "value"
+                    value: player.positionPercent
+                    when: !progressSlider.pressed
+                }
+
                 RowLayout {
                     Layout.fillWidth: true
-                    spacing: 12
+                    spacing: 10
 
-                    Button {
-                        text: "🔊"
-                        background: Rectangle { color: "transparent" }
+                    ToolButton {
+                        text: player.isPlaying ? qsTr("Pause") : qsTr("Play")
+                        icon.name: player.isPlaying ? "media-playback-pause" : "media-playback-start"
+                        display: AbstractButton.TextBesideIcon
+                        onClicked: player.playPause()
+                    }
+
+                    ToolButton {
+                        text: qsTr("Stop")
+                        icon.name: "media-playback-stop"
+                        display: AbstractButton.TextBesideIcon
+                        onClicked: player.stop()
+                    }
+
+                    ToolButton {
+                        text: qsTr("Open")
+                        icon.name: "document-open"
+                        display: AbstractButton.TextBesideIcon
+                        onClicked: openDialog.open()
+                    }
+
+                    Rectangle {
+                        radius: 999
+                        color: "#202733"
+                        border.color: "#314055"
+                        border.width: 1
+                        implicitHeight: 30
+                        implicitWidth: 146
+
+                        Label {
+                            anchors.centerIn: parent
+                            text: player.positionString + " / " + player.durationString
+                            color: "#eef2f7"
+                            font.pixelSize: 13
+                        }
+                    }
+
+                    Item { Layout.fillWidth: true }
+
+                    Label {
+                        text: qsTr("Volume")
+                        color: "#9aa6b2"
                     }
 
                     Slider {
-                        Layout.preferredWidth: 200
-                        value: 0.7
+                        id: volumeSlider
+                        width: 160
+                        from: 0
+                        to: 100
+                        onMoved: player.volume = Math.round(value)
                     }
 
-                    Item {
-                        Layout.fillWidth: true
-                        Rectangle {
-                                anchors.fill: parent   // 让矩形充满整个 Item
-                                color: "red"
-                        }
+                    Binding {
+                        target: volumeSlider
+                        property: "value"
+                        value: player.volume
+                        when: !volumeSlider.pressed
                     }
                 }
             }

@@ -60,6 +60,8 @@ public:
     // 音视频播放主要接口
     //    加载音频文件
     Q_INVOKABLE void loadFile(const QUrl &url);
+    //    加载后自动播放
+    Q_INVOKABLE void loadAndPlay(const QUrl &url);
     //    播放
     Q_INVOKABLE void play();
     //    暂停
@@ -91,4 +93,5 @@ private:
     // 内部状态保存
     bool m_isMediaLoaded;
     QString m_currentFileName;
+    bool m_shouldAutoPlay;
 };

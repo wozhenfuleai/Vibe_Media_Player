@@ -1,4 +1,4 @@
-#include "playercontroller.h"
+#include "PlayerController.h"
 #include <QFileInfo>
 #include <QAudioOutput>
 #include <QObject>
@@ -10,6 +10,7 @@ PlayerController::PlayerController(QObject *parent)
     , m_player(new QMediaPlayer(this))
     , m_audioOutput(new QAudioOutput(this))
     , m_isMediaLoaded(false)
+    , m_shouldAutoPlay(false)
 {
     // 将音频输出组件绑定到播放器
     m_player->setAudioOutput(m_audioOutput);
@@ -84,6 +85,12 @@ void PlayerController::loadFile(const QUrl &url) {
     }
     // 4. 让底层开始异步加载。别在这里设 isMediaLoaded = true！！！
     m_player->setSource(url);
+}
+
+void PlayerController::loadAndPlay(const QUrl &url) {
+    if (url.isEmpty()) return;
+    m_shouldAutoPlay = true;
+    loadFile(url);
 }
 
 void PlayerController::play() {
@@ -161,11 +168,16 @@ void PlayerController::onMediaStatusChanged(QMediaPlayer::MediaStatus status) {
         // 文件不仅存在且音视频轨都解析完毕，可播放
         m_isMediaLoaded = true;
         emit mediaLoaded();
+        if (m_shouldAutoPlay) {
+            m_shouldAutoPlay = false;
+            m_player->play();
+        }
         break;
 
     case QMediaPlayer::InvalidMedia:
         // 文件损坏、格式不支持、或者路径不对
         m_isMediaLoaded = false;
+        m_shouldAutoPlay = false;
         m_currentFileName = "文件格式错误或损坏";
         emit mediaLoaded(); // 通知 QML 显示错误信息
         break;
