@@ -5,6 +5,7 @@
 #include <QMediaPlayer>//用到了 Qt 元对象系统（Q_OBJECT 宏），必须看到完整类定义，前置声明不够
 class QAudioOutput;
 class QObject;
+class QProcess;
 class QString;
 class QUrl;
 // 定义核心类： 音视频播放控制器
@@ -30,6 +31,10 @@ class PlayerController : public QObject
     Q_PROPERTY(int positionPercent READ positionPercent WRITE setPositionPercent NOTIFY positionChanged)
     // 音量
     Q_PROPERTY(int volume READ volume WRITE setVolume NOTIFY volumeChanged)
+    // 解析结果（JSON 文本，来自 ffprobe）
+    Q_PROPERTY(QString mediaInfoJson READ mediaInfoJson NOTIFY mediaInfoChanged)
+    // 最近一次解析/播放错误
+    Q_PROPERTY(QString lastError READ lastError NOTIFY errorChanged)
 signals:
     // 属性信号， 给QML用。
     void playingChanged();
@@ -37,6 +42,8 @@ signals:
     void positionChanged();
     void volumeChanged();
     void durationChanged(); // 补充的信号
+    void mediaInfoChanged();
+    void errorChanged();
 public:
     // 构造函数
     explicit PlayerController(QObject *parent = nullptr);
@@ -50,6 +57,8 @@ public:
     QString positionString() const;
     int positionPercent() const;
     int volume() const;
+    QString mediaInfoJson() const;
+    QString lastError() const;
     // 属性设置接口
     //    设置音量
     Q_INVOKABLE void setVolume(int vol);
@@ -57,6 +66,10 @@ public:
     Q_INVOKABLE void setPosition(int ms);
     //    设置位置百分比,百分比跳转
     Q_INVOKABLE void setPositionPercent(int pct);
+    //    解析媒体信息（调用 ffprobe，异步返回）
+    Q_INVOKABLE void probeFile(const QUrl &url);
+    //    设置 ffprobe 命令路径，默认值为 "ffprobe"
+    Q_INVOKABLE void setProbeProgram(const QString &program);
     // 音视频播放主要接口
     //    加载音频文件
     Q_INVOKABLE void loadFile(const QUrl &url);
@@ -82,6 +95,8 @@ private slots:
     void onDurationChanged(qint64 duration);
     // 专门处理媒体加载状态的槽函数
     void onMediaStatusChanged(QMediaPlayer::MediaStatus status);
+    // ffprobe 进程结束槽
+    void onProbeFinished(int exitCode, QProcess::ExitStatus exitStatus);
 private:
     // 内部工具函数：将毫秒转换为 mm:ss 格式
     QString formatTime(int ms) const;
@@ -89,9 +104,13 @@ private:
     // 核心多媒体组件
     QMediaPlayer *m_player;
     QAudioOutput *m_audioOutput;
+    QProcess *m_probeProcess;
 
     // 内部状态保存
     bool m_isMediaLoaded;
     QString m_currentFileName;
     bool m_shouldAutoPlay;
+    QString m_probeProgram;
+    QString m_mediaInfoJson;
+    QString m_lastError;
 };
