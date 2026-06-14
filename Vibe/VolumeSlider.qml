@@ -39,6 +39,14 @@ RowLayout {
         onMoved: root.audioOutput.volume = value
     }
 
+    Label {
+        text: Math.round(root.audioOutput.volume * 100) + "%"
+        color: "white"
+        font.family: "monospace"
+        Layout.preferredWidth: 40
+        horizontalAlignment: Text.AlignHCenter
+    }
+
     Item {
         Layout.fillWidth: true
     }

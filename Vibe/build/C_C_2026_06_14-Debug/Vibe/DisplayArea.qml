@@ -44,4 +44,38 @@ Rectangle {
         color: "#888888"
         font.pixelSize: 18
     }
+    //单击播放区域暂停\继续播放
+    MouseArea {
+        id: playAreaMouse
+        anchors.fill: parent
+        z: 1
+        hoverEnabled: true
+        enabled: root.mediaPlayer.source.toString() !== ""
+        onClicked: {
+            if (root.mediaPlayer.playbackState === MediaPlayer.PlayingState)
+                root.mediaPlayer.pause()
+            else
+                root.mediaPlayer.play()
+        }
+    }
+
+    Item {
+        anchors.centerIn: parent
+        visible: playAreaMouse.containsMouse
+        width: 72
+        height: 72
+
+        Rectangle {
+            anchors.fill: parent
+            radius: width / 2
+            color: "#80000000"
+        }
+
+        Text {
+            anchors.centerIn: parent
+            text: root.mediaPlayer.playbackState === MediaPlayer.PlayingState ? "⏸" : "▶"
+            color: "white"
+            font.pixelSize: 36
+        }
+    }
 }

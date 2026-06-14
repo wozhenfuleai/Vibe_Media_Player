@@ -22,7 +22,7 @@
                     {
                         "codegenSuccessful": false,
                         "column": 19,
-                        "durationMicroseconds": 72,
+                        "durationMicroseconds": 43,
                         "errorMessage": "Cannot access value for name parent",
                         "functionName": "text",
                         "line": 26
@@ -30,7 +30,7 @@
                     {
                         "codegenSuccessful": false,
                         "column": 34,
-                        "durationMicroseconds": 429,
+                        "durationMicroseconds": 264,
                         "errorMessage": "Cannot access value for name Text",
                         "functionName": "horizontalAlignment",
                         "line": 28
@@ -38,7 +38,7 @@
                     {
                         "codegenSuccessful": false,
                         "column": 32,
-                        "durationMicroseconds": 356,
+                        "durationMicroseconds": 213,
                         "errorMessage": "Cannot access value for name Text",
                         "functionName": "verticalAlignment",
                         "line": 29
@@ -58,6 +58,22 @@
                         "errorMessage": "Could not find signal \"moved\".",
                         "functionName": "onMoved",
                         "line": 39
+                    },
+                    {
+                        "codegenSuccessful": false,
+                        "column": 15,
+                        "durationMicroseconds": 0,
+                        "errorMessage": "Could not find property \"text\".",
+                        "functionName": "text",
+                        "line": 43
+                    },
+                    {
+                        "codegenSuccessful": false,
+                        "column": 30,
+                        "durationMicroseconds": 0,
+                        "errorMessage": "Could not find property \"horizontalAlignment\".",
+                        "functionName": "horizontalAlignment",
+                        "line": 47
                     }
                 ],
                 "filePath": "/root/文件搜集/GitHub/Vibe_Media_Player_Clone_Wu/Vibe/VolumeSlider.qml"
