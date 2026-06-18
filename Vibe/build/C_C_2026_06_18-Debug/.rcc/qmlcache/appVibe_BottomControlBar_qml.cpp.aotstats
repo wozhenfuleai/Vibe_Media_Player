@@ -1,0 +1,36 @@
+[
+    {
+        "moduleFiles": [
+            {
+                "entries": [
+                    {
+                        "codegenSuccessful": true,
+                        "column": 22,
+                        "durationMicroseconds": 177,
+                        "errorMessage": "",
+                        "functionName": "mediaPlayer",
+                        "line": 20
+                    },
+                    {
+                        "codegenSuccessful": true,
+                        "column": 17,
+                        "durationMicroseconds": 87,
+                        "errorMessage": "",
+                        "functionName": "window",
+                        "line": 21
+                    },
+                    {
+                        "codegenSuccessful": true,
+                        "column": 22,
+                        "durationMicroseconds": 74,
+                        "errorMessage": "",
+                        "functionName": "audioOutput",
+                        "line": 26
+                    }
+                ],
+                "filePath": "/root/GitHub/Vibe_Media_Player_Clone_Wu/Vibe/BottomControlBar.qml"
+            }
+        ],
+        "moduleId": "Vibe(appVibe)"
+    }
+]
