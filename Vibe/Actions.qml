@@ -3,7 +3,7 @@ import QtQuick.Controls
 
 Item {
     property alias open: _open
-    property alias new: _new
+    property alias newAction: _new
     property alias quit: _quit
     property alias about: _about
 

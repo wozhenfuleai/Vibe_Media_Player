@@ -25,7 +25,7 @@ qt_add_qml_module(appVibe
         TopTitleBar.qml
         BottomControlBar.qml
         Controller.qml
-        Action.qml
+        Actions.qml
         Dialog.qml
     SOURCES
         PlayerController.cpp
