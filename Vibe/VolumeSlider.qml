@@ -3,16 +3,31 @@ import QtQuick.Controls
 import QtQuick.Layouts
 //   组成是 ： 按钮，滑动条，以及一个普通的Item用作填充物
 RowLayout {
+    property var player
     spacing: 10
 
     Button {
         text: "🔊"
         background: Rectangle { color: "transparent" }
+        onClicked: if (player) player.volumeUp(5)
     }
 
     Slider {
         Layout.preferredWidth: 200
-        value: 0.7
+        from: 0
+        to: 100
+        value: player ? player.volume : 0
+        onMoved: {
+            if (player) {
+                player.volume = Math.round(value)
+            }
+        }
+    }
+
+    Button {
+        text: "🔉"
+        background: Rectangle { color: "transparent" }
+        onClicked: if (player) player.volumeDown(5)
     }
 
     Item {

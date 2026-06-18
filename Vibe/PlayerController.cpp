@@ -30,6 +30,10 @@ PlayerController::PlayerController(QObject *parent)
             qOverload<int, QProcess::ExitStatus>(&QProcess::finished),
             this,
             &PlayerController::onProbeFinished);
+        connect(m_probeProcess,
+            &QProcess::errorOccurred,
+            this,
+            &PlayerController::onProbeErrorOccurred);
 }
 
 // ==========================================
@@ -91,13 +95,13 @@ void PlayerController::loadFile(const QUrl &url) {
     m_player->stop();
     // 2. 先把状态标记为“未加载完毕”，防止 UI 误操作
     m_isMediaLoaded = false;
-    emit mediaLoaded(); // 可选操作，通知前端暂时禁用播放按钮，QML 绑定的文件名和布尔值会自动更新
 
     // 更新预期的文件名(用于界面提示正在加载xxx)
     m_currentFileName = url.fileName();
     if (m_currentFileName.isEmpty()) {
         m_currentFileName = "未知文件";
     }
+    emit mediaLoaded(); // 放在赋值之后，确保绑定 currentFileName 的界面能拿到新值
     // 4. 让底层开始异步加载。别在这里设 isMediaLoaded = true！！！
     m_player->setSource(url);
 }
@@ -142,6 +146,26 @@ void PlayerController::setPositionPercent(int pct) {
     }
 }
 
+void PlayerController::seekBy(int deltaMs) {
+    const int durationMs = m_player->duration();
+    const int currentMs = m_player->position();
+    int targetMs = currentMs + deltaMs;
+    if (durationMs > 0) {
+        targetMs = qBound(0, targetMs, durationMs);
+    } else {
+        targetMs = qMax(0, targetMs);
+    }
+    m_player->setPosition(targetMs);
+}
+
+void PlayerController::fastForward(int deltaMs) {
+    seekBy(qAbs(deltaMs));
+}
+
+void PlayerController::rewind(int deltaMs) {
+    seekBy(-qAbs(deltaMs));
+}
+
 void PlayerController::probeFile(const QUrl &url) {
     if (url.isEmpty()) {
         m_lastError = "未选择文件";
@@ -162,7 +186,9 @@ void PlayerController::probeFile(const QUrl &url) {
     }
 
     m_mediaInfoJson.clear();
+    m_lastError.clear();
     emit mediaInfoChanged();
+    emit errorChanged();
 
     const QStringList args = {
         "-v", "quiet",
@@ -187,6 +213,18 @@ void PlayerController::setVolume(int vol) {
     // 转换为 0.0-1.0 发送给底层
     m_audioOutput->setVolume(vol / 100.0f);
     emit volumeChanged();
+}
+
+void PlayerController::adjustVolume(int delta) {
+    setVolume(volume() + delta);
+}
+
+void PlayerController::volumeUp(int delta) {
+    adjustVolume(qAbs(delta));
+}
+
+void PlayerController::volumeDown(int delta) {
+    adjustVolume(-qAbs(delta));
 }
 
 void PlayerController::setVideoOutput(QObject *output) {
@@ -258,6 +296,34 @@ void PlayerController::onProbeFinished(int exitCode, QProcess::ExitStatus exitSt
 
     m_mediaInfoJson.clear();
     m_lastError = stdErr.isEmpty() ? "ffprobe 执行失败，请检查是否已安装并加入 PATH" : stdErr.trimmed();
+    emit mediaInfoChanged();
+    emit errorChanged();
+}
+
+void PlayerController::onProbeErrorOccurred(QProcess::ProcessError error) {
+    switch (error) {
+    case QProcess::FailedToStart:
+        m_lastError = "ffprobe 启动失败：请检查 ffprobe 是否存在且已加入 PATH";
+        break;
+    case QProcess::Crashed:
+        m_lastError = "ffprobe 运行过程中崩溃";
+        break;
+    case QProcess::Timedout:
+        m_lastError = "ffprobe 执行超时";
+        break;
+    case QProcess::ReadError:
+        m_lastError = "ffprobe 读取输出失败";
+        break;
+    case QProcess::WriteError:
+        m_lastError = "ffprobe 写入输入失败";
+        break;
+    case QProcess::UnknownError:
+    default:
+        m_lastError = "ffprobe 发生未知错误";
+        break;
+    }
+
+    m_mediaInfoJson.clear();
     emit mediaInfoChanged();
     emit errorChanged();
 }

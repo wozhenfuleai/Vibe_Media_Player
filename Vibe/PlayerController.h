@@ -66,6 +66,10 @@ public:
     Q_INVOKABLE void setPosition(int ms);
     //    设置位置百分比,百分比跳转
     Q_INVOKABLE void setPositionPercent(int pct);
+    //    相对当前位置快进/快退
+    Q_INVOKABLE void seekBy(int deltaMs);
+    Q_INVOKABLE void fastForward(int deltaMs = 10000);
+    Q_INVOKABLE void rewind(int deltaMs = 10000);
     //    解析媒体信息（调用 ffprobe，异步返回）
     Q_INVOKABLE void probeFile(const QUrl &url);
     //    设置 ffprobe 命令路径，默认值为 "ffprobe"
@@ -83,6 +87,10 @@ public:
     Q_INVOKABLE void stop();
     //    播放暂停
     Q_INVOKABLE void playPause();
+    //    音量快捷调整
+    Q_INVOKABLE void adjustVolume(int delta);
+    Q_INVOKABLE void volumeUp(int delta = 5);
+    Q_INVOKABLE void volumeDown(int delta = 5);
 
     // 【新增】提供给 QML，用来接收前端的视频画布
     Q_INVOKABLE void setVideoOutput(QObject *output);
@@ -97,6 +105,8 @@ private slots:
     void onMediaStatusChanged(QMediaPlayer::MediaStatus status);
     // ffprobe 进程结束槽
     void onProbeFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    // ffprobe 启动失败/运行时错误槽
+    void onProbeErrorOccurred(QProcess::ProcessError error);
 private:
     // 内部工具函数：将毫秒转换为 mm:ss 格式
     QString formatTime(int ms) const;

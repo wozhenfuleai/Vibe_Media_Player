@@ -67,6 +67,7 @@ ApplicationWindow {
             BottomControlBar {
                 Layout.fillWidth: true
                 spacing: 20
+                player: playerController
             }
 
             Label {

@@ -24,7 +24,7 @@ Item {
 
     Action {
         id: _about
-        text: qsTR("&About")
+        text: qsTr("&About")
         icon.name: "help-about"
     }
 }
