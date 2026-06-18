@@ -46,6 +46,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 currentTitle: playerController.currentFileName === "" ? "视频播放" : playerController.currentFileName
                 onOpenFileRequested: openMediaDialog.open()
+                onNewWindowRequested: playerController.openNewWindow()
             }
             // 视频显示区域
             Rectangle {

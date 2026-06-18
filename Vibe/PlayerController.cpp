@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QString>
 #include <QUrl>
+#include <QCoreApplication>
 // 构造函数
 PlayerController::PlayerController(QObject *parent)
     : QObject{parent}
@@ -230,6 +231,10 @@ void PlayerController::volumeDown(int delta) {
 void PlayerController::setVideoOutput(QObject *output) {
     // 直接把前端传进来的 VideoOutput 交给底层的 QMediaPlayer
     m_player->setVideoOutput(output);
+}
+
+void PlayerController::openNewWindow() {
+    QProcess::startDetached(QCoreApplication::applicationFilePath());
 }
 
 // ==========================================

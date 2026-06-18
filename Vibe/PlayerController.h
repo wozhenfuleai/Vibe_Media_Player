@@ -95,6 +95,8 @@ public:
     // 【新增】提供给 QML，用来接收前端的视频画布
     Q_INVOKABLE void setVideoOutput(QObject *output);
 
+    // 【新增】打开新窗口
+    Q_INVOKABLE void openNewWindow();
 
 private slots:
     // 处理 QMediaPlayer 内部状态改变的槽函数

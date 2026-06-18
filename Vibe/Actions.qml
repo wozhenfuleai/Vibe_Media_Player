@@ -3,6 +3,7 @@ import QtQuick.Controls
 
 Item {
     property alias open: _open
+    property alias new: _new
     property alias quit: _quit
     property alias about: _about
 
@@ -11,6 +12,13 @@ Item {
         text: qsTr("&Open...")
         icon.name: "document-open"
         shortcut: StandardKey.Open
+    }
+
+    Action {
+        id: _new
+        text: qsTr("&New Window")
+        icon.name: "window-new"
+        shortcut: "Ctrl+N"
     }
 
     Action {
