@@ -4,6 +4,7 @@ import QtQuick.Layouts
 
 RowLayout {
     signal openFileRequested()
+    signal newWindowRequested()
     property string currentTitle: "视频播放"
 
 
@@ -12,6 +13,12 @@ RowLayout {
         text: "打开"
         background: Rectangle { color: "transparent" }
         onClicked: openFileRequested()
+    }
+
+    Button {
+        text: "新窗口"
+        background: Rectangle { color: "transparent" }
+        onClicked: newWindowRequested()
     }
 
     // todo 将这个标签删除， 或者将这个标签显示为当前文件名字
