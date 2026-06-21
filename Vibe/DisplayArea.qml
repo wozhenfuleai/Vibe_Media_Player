@@ -6,11 +6,16 @@ import QtMultimedia
 Rectangle {
     id: root
 
+    // 必需属性 播放器
     required property MediaPlayer mediaPlayer
+    // 必须属性 音频输出
     required property AudioOutput audioOutput
+    // 必须属性 窗口
     required property Window window
 
+    // 文件名字
     property string fileName: "未打开文件"
+    // 打开文件📄的信号
     signal openFile()
 
     color: "#000000"
@@ -19,32 +24,42 @@ Rectangle {
         anchors.fill: parent
         spacing: 0
 
+        // 顶部标题栏
         TopTitleBar {
             Layout.preferredHeight: 30
             Layout.fillWidth: true
             fileName: root.fileName
+            // 内部信号传递过来【想要打开文件】信号
+            // 类似一种链式的感觉
             onOpenFile: root.openFile()
         }
 
+        // 中间矩形的播放区域
         Rectangle {
             id: videoArea
             Layout.fillWidth: true
             Layout.fillHeight: true
             color: "#1a1a1a"
 
+            // 输出视频 📹》  来源于QtMultiMedia
             VideoOutput {
                 id: videoOutput
                 anchors.fill: parent
+                // 视频输出格式：保持长宽比
                 fillMode: VideoOutput.PreserveAspectFit
-                visible: root.mediaPlayer.hasVideo
+                visible: root.mediaPlayer.hasVideo   // 视频 可见性
 
+                // 加载完毕的时候直接将播放器的视频输出  绑定到本文件中的视频输出
+                // 内部实现逻辑书写，外部只需要简单调用
                 Component.onCompleted: root.mediaPlayer.videoOutput = videoOutput
+
+                // 析构的时候解除绑定，绑定置空
                 Component.onDestruction: {
                     if (root.mediaPlayer.videoOutput === videoOutput)
                         root.mediaPlayer.videoOutput = null
                 }
             }
-
+            // 标签： 播放音频的标签
             Label {
                 anchors.centerIn: parent
                 visible: !root.mediaPlayer.hasVideo
@@ -55,6 +70,7 @@ Rectangle {
                 font.pixelSize: 24
             }
 
+            // 标签：提醒作用，类似placeholder占位符
             Label {
                 anchors.centerIn: parent
                 visible: root.mediaPlayer.source.toString() === ""
@@ -63,6 +79,7 @@ Rectangle {
                 font.pixelSize: 18
             }
 
+            // 鼠标区域（有媒体文件的时候激活）—— 用于暂停和播放
             MouseArea {
                 id: playAreaMouse
                 anchors.fill: parent
@@ -77,6 +94,8 @@ Rectangle {
                 }
             }
 
+            // 关于播放有媒体文件的补充
+            //   就是对playAreaMouse的图标补充
             Item {
                 anchors.centerIn: parent
                 visible: playAreaMouse.containsMouse
@@ -98,6 +117,7 @@ Rectangle {
             }
         }
 
+        // 底部栏
         BottomControlBar {
             Layout.fillWidth: true
             mediaPlayer: root.mediaPlayer
