@@ -18,7 +18,7 @@ ApplicationWindow {
         id: fileDialog
         title: "打开媒体文件"
         nameFilters: [
-            "媒体文件 (*.mp4 *.mkv *.avi *.mov *.wmv *.flv *.webm *.mp3 *.wav *.flac*.aac *.ogg *.m4a *.wma)",
+            "媒体文件 (*.mp4 *.mkv *.avi *.mov *.wmv *.flv *.webm *.mp3 *.wav *.flac *.aac *.ogg *.m4a *.wma)",
             "所有文件 (*)"
         ]
         onAccepted: content.player.source = selectedFile
