@@ -1,3 +1,4 @@
+> <span style="color:red;">注意这个文档已经过时了 ✈️? </span>  
 # 简要介绍  Introduction
 本文档定义 C++ 后端暴露给 QML 前端的接口   
 假设你是打算创建类 PlayerController 暴露给ui使用  
