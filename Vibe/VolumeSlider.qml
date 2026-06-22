@@ -58,7 +58,7 @@ RowLayout {
     }
 
     Button {
-        text: "🔉"
+        text: "🔊"
         background: Rectangle { color: "transparent" }
         onClicked: if (player) player.volumeDown(5)
     }

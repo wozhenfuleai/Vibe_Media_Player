@@ -1,0 +1,14 @@
+<RCC>
+  <qresource prefix="/qt/qml/Vibe/">
+    <file alias="Window.qml">/root/GitHub/Vibe_Media_Player_Wu/Vibe/Window.qml</file>
+    <file alias="PlaySlider.qml">/root/GitHub/Vibe_Media_Player_Wu/Vibe/PlaySlider.qml</file>
+    <file alias="VolumeSlider.qml">/root/GitHub/Vibe_Media_Player_Wu/Vibe/VolumeSlider.qml</file>
+    <file alias="TopTitleBar.qml">/root/GitHub/Vibe_Media_Player_Wu/Vibe/TopTitleBar.qml</file>
+    <file alias="BottomControlBar.qml">/root/GitHub/Vibe_Media_Player_Wu/Vibe/BottomControlBar.qml</file>
+    <file alias="Actions.qml">/root/GitHub/Vibe_Media_Player_Wu/Vibe/Actions.qml</file>
+    <file alias="Content.qml">/root/GitHub/Vibe_Media_Player_Wu/Vibe/Content.qml</file>
+    <file alias="Dialog.qml">/root/GitHub/Vibe_Media_Player_Wu/Vibe/Dialog.qml</file>
+    <file alias="ActionsLib.qml">/root/GitHub/Vibe_Media_Player_Wu/Vibe/ActionsLib.qml</file>
+  </qresource>
+</RCC>
+
