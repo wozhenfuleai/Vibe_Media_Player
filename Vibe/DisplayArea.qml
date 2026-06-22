@@ -1,17 +1,17 @@
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
-import QtMultimedia
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.3
+import QtMultimedia 5.15
 
 Rectangle {
     id: root
 
     // 必需属性 播放器
     required property MediaPlayer mediaPlayer
-    // 必须属性 音频输出
-    required property AudioOutput audioOutput
-    // 必须属性 窗口
-    required property Window window
+    // 必须属性 音频输出（在 shim 环境下可为任意对象）
+    property var audioOutput
+    // 必须属性 窗口（在 shim 环境下可为任意对象）
+    property var window
 
     // 文件名字
     property string fileName: "未打开文件"
@@ -28,10 +28,10 @@ Rectangle {
         TopTitleBar {
             Layout.preferredHeight: 30
             Layout.fillWidth: true
-            fileName: root.fileName
+            currentTitle: root.fileName
             // 内部信号传递过来【想要打开文件】信号
             // 类似一种链式的感觉
-            onOpenFile: root.openFile()
+            onOpenFileRequested: root.openFile()
         }
 
         // 中间矩形的播放区域

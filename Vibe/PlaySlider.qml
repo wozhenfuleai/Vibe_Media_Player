@@ -1,92 +1,74 @@
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
-import QtMultimedia
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.3
 RowLayout {
-    id: root
-
-    required property MediaPlayer mediaPlayer
-    required property Window window
+    property var player
 
     // 播放功能
     Button {
-        text: root.mediaPlayer.playbackState === MediaPlayer.PlayingState ? "⏸" : "▶"
-        enabled: root.mediaPlayer.source.toString() !== ""
-        onClicked: {
-            if (root.mediaPlayer.playbackState === MediaPlayer.PlayingState)
-                root.mediaPlayer.pause()
-            else
-                root.mediaPlayer.play()
-        }
+        text: player && player.isPlaying ? "⏸" : "▶"
         background: Rectangle { color: "transparent" }
-        contentItem: Text {
-            text: parent.text
-            color: parent.enabled ? "white" : "#666666"
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+        onClicked: {
+            if (player) {
+                player.playPause()
+            }
         }
     }
 
     // 设置当前播放进度， 可以删除，因为滑动条更加直观
     Label {
-        text: Actions.formatTime(root.mediaPlayer.position)
+        text: player ? player.positionString : "00:00"
         color: "white"
-        font.family: "monospace"
     }
 
     // 设置当前播放进度对应上的滑动条，和上方的label可能需要做关联
     Slider {
-        id: progressSlider
         Layout.fillWidth: true
         from: 0
-        to: Math.max(root.mediaPlayer.duration, 1)
-        enabled: root.mediaPlayer.duration > 0
-
-        property real displayValue: 0
-
-        value: displayValue
-
-        onMoved: displayValue = value
-
-        onPressedChanged: {
-            if (!pressed)
-                root.mediaPlayer.position = displayValue
-        }
-
-        Connections {
-            target: root.mediaPlayer
-            function onPositionChanged() {
-                if (!progressSlider.pressed)
-                    progressSlider.displayValue = root.mediaPlayer.position
-            }
-            function onDurationChanged() {
-                progressSlider.to = Math.max(root.mediaPlayer.duration, 1)
+        to: 100
+        value: player ? player.positionPercent : 0
+        onMoved: {
+            if (player) {
+                player.positionPercent = Math.round(value)
             }
         }
     }
 
     // 显示当前播放进度
     Label {
-        text: Actions.formatTime(root.mediaPlayer.duration)
+        text: player ? player.durationString : "00:00"
         color: "white"
-        font.family: "monospace"
+    }
+
+    Button {
+        text: "-10s"
+        background: Rectangle { color: "transparent" }
+        onClicked: if (player) player.rewind(10000)
+    }
+
+    Button {
+        text: "+10s"
+        background: Rectangle { color: "transparent" }
+        onClicked: if (player) player.fastForward(10000)
+    }
+
+    Button {
+        text: "■"
+        background: Rectangle { color: "transparent" }
+        onClicked: if (player) player.stop()
     }
 
     // 这个是全屏按钮功能，提供 点击事件 需要优化全屏功能
     Button {
         text: "⛶"
-        onClicked: {
-            if (root.window.visibility === Window.FullScreen)
-                root.window.showNormal()
-            else
-                root.window.showFullScreen()
-        }
         background: Rectangle { color: "transparent" }
-        contentItem: Text {
-            text: parent.text
-            color: "white"
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+        onClicked: {
+               // 切换全屏 / 退出全屏
+               if (visibility === Window.FullScreen) {
+                   visibility = Window.Windowed;  // 退出全屏
+               } else {
+                   visibility = Window.FullScreen; // 进入全屏
+               }
         }
     }
 }
