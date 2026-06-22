@@ -1,10 +1,10 @@
+//组件：关于About对话框的内容和排版
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
 Dialog {
     id: root
-
     modal: true
     focus: true
     padding: 20
@@ -79,7 +79,7 @@ Dialog {
         }
 
         Label {
-            text: qsTr("Copyright © 2026 张训甫、林建华、吴永超")
+            text: qsTr("Created By 张迅福、林健华、吴永超")
             wrapMode: Text.WordWrap
             Layout.fillWidth: true
             opacity: 0.65
@@ -94,10 +94,6 @@ Dialog {
             font.pixelSize: 11
         }
 
-        Label {
-            text: qsTr("构建于 Qt %1").arg(Qt.version)
-            opacity: 0.55
-            font.pixelSize: 11
-        }
+
     }
 }

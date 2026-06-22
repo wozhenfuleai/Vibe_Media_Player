@@ -1,3 +1,4 @@
+//该文件汇集了所有的aciton
 import QtQuick.Controls
 import QtQuick
 

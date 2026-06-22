@@ -1,9 +1,10 @@
+//// This is the application's main window应用主窗口
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
 import QtMultimedia
-import "./" as Local
+
 
 ApplicationWindow {
     id: window
@@ -19,39 +20,12 @@ ApplicationWindow {
         visibility = isFullscreen ? Window.Windowed : Window.FullScreen
     }
 
-    Local.Actions {
+    Actions {
         id: actions
     }
 
     AboutDialog {
         id: aboutDialog
-    }
-
-    menuBar: MenuBar {
-        visible: !window.isFullscreen
-        palette.window: "#1a1a1a"
-        palette.windowText: "#ffffff"
-        palette.button: "#1a1a1a"
-        palette.buttonText: "#ffffff"
-        palette.highlight: "#404040"
-        palette.highlightedText: "#ffffff"
-
-        background: Rectangle {
-            color: "#1a1a1a"
-        }
-
-        Menu {
-            title: qsTr("文件(&F)")
-            MenuItem { action: actions.open }
-            MenuItem { action: actions.newAction }
-            MenuSeparator {}
-            MenuItem { action: actions.quit }
-        }
-
-        Menu {
-            title: qsTr("帮助(&H)")
-            MenuItem { action: actions.about }
-        }
     }
 
     Connections {
@@ -75,7 +49,7 @@ ApplicationWindow {
         onActivated: window.visibility = Window.Windowed
     }
 
-    Local.PlayerController {
+    PlayerController {
         id: playerController
     }
 
@@ -93,6 +67,8 @@ ApplicationWindow {
         }
     }
 
+    Component.onCompleted: Qt.callLater(function() { videoArea.forceActiveFocus() })
+
     Rectangle {
         anchors.fill: parent
         color: "#000000"
@@ -104,22 +80,21 @@ ApplicationWindow {
             anchors.margins: window.isFullscreen ? 0 : 16
             spacing: 0
 
-            TopTitleBar {
+            TopMenuBar {
                 Layout.preferredHeight: 36
                 Layout.fillWidth: true
                 visible: !window.isFullscreen
+                actions: actions
                 currentTitle: playerController.currentFileName === ""
-                              ? qsTr("视频播放")
-                              : playerController.currentFileName
-                aboutAction: actions.about
-                quitAction: actions.quit
-                onOpenFileRequested: openMediaDialog.open()
-                onNewWindowRequested: playerController.openNewWindow()
+                              ? qsTr("未选择音视频文件")
+                              : qsTr("正在播放：")+playerController.currentFileName
             }
 
             Rectangle {
+                id: videoArea
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                focus: true
                 color: "#000000"
                 border.color: window.isFullscreen ? "transparent" : "#ffffff"
                 border.width: window.isFullscreen ? 0 : 1

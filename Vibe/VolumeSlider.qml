@@ -1,3 +1,4 @@
+//组件：音量控制条
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
@@ -35,6 +36,10 @@ RowLayout {
 
     Button {
         id: volumeButton
+        implicitWidth: 36
+        implicitHeight: 32
+        padding: 8
+        palette.buttonText: "#FFFFFF"
         text: {
             if (player && typeof player.volume !== "undefined")
                 return player.volume > 0 ? "🔉" : "🔇"
@@ -42,7 +47,19 @@ RowLayout {
                 return audioOutput.volume > 0 ? "🔉" : "🔇"
             return "🔉"
         }
-        background: Rectangle { color: "transparent" }
+        contentItem: Text {
+            text: volumeButton.text
+            color: "#FFFFFF"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+        background: Rectangle {
+            radius: 4
+            color: volumeButton.down ? "#55FFFFFF"
+                                     : (volumeButton.hovered ? "#30FFFFFF" : "#20FFFFFF")
+            border.color: volumeButton.hovered || volumeButton.down ? "#90FFFFFF" : "#45FFFFFF"
+            border.width: 1
+        }
         onClicked: {
             if (player && typeof player.volume !== "undefined") {
                 if (player.volume > 0) {

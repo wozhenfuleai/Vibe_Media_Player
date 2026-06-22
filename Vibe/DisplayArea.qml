@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 import QtMultimedia 5.15
+import Vibe 1.0
 
 Rectangle {
     id: root
@@ -15,7 +16,9 @@ Rectangle {
 
     // 文件名字
     property string fileName: "未打开文件"
-    // 打开文件📄的信号
+    // 菜单 Action 集合（由上层窗口注入，与 Window.qml 保持一致）
+    property Actions actions: null
+    // 打开文件📄的信号（无 actions 时的回退）
     signal openFile()
 
     color: "#000000"
@@ -25,12 +28,11 @@ Rectangle {
         spacing: 0
 
         // 顶部标题栏
-        TopTitleBar {
+        TopMenuBar {
             Layout.preferredHeight: 30
             Layout.fillWidth: true
+            actions: root.actions
             currentTitle: root.fileName
-            // 内部信号传递过来【想要打开文件】信号
-            // 类似一种链式的感觉
             onOpenFileRequested: root.openFile()
         }
 
