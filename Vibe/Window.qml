@@ -35,7 +35,7 @@ ApplicationWindow {
     Rectangle {
         anchors.fill: parent
         anchors.margins: 0
-        color: "#363636"//#1E1E1E"
+        color: "#1E1E1E"
         //border.color: "#9999CC"
         //border.width: 1
         //radius: 10
@@ -60,15 +60,9 @@ ApplicationWindow {
                 Layout.fillHeight: true
                 color: "#363636"
                 //border.color: "#9999CC"
-                border.width: 1
+                border.width: 5
                 radius: 8
                 clip: true
-                /*
-                Label{
-                    id: playerAreaHelp
-                    text: "Click for openning"
-                    anchors.CenterIn: parent
-                }*/
 
                 VideoOutput {
                     id: videoOutput
