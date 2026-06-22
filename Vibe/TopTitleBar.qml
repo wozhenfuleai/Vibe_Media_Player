@@ -1,37 +1,70 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.3
-import QtMultimedia 5.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 RowLayout {
+    id: root
+
     signal openFileRequested()
     signal newWindowRequested()
-    property string currentTitle: "视频播放"
 
+    property string currentTitle: qsTr("视频播放")
+    property Action aboutAction: null
+    property Action quitAction: null
 
-    //todo  将这个提升到垂直区域，并且设置为工具栏，内部包含文件打开功能
+    spacing: 4
+
     Button {
-        text: "打开"
-        background: Rectangle { color: "transparent" }
+        text: qsTr("打开")
+        palette.buttonText: "#FFFFFF"
+        ToolTip.visible: hovered
+        ToolTip.text: qsTr("打开媒体文件 (Ctrl+O)")
+        background: Rectangle { color: parent.down ? "#40FFFFFF" : (parent.hovered ? "#25FFFFFF" : "transparent") }
         onClicked: openFileRequested()
     }
 
     Button {
-        text: "新窗口"
-        background: Rectangle { color: "transparent" }
+        text: qsTr("新窗口")
+        palette.buttonText: "#FFFFFF"
+        ToolTip.visible: hovered
+        ToolTip.text: qsTr("打开新的播放器窗口")
+        background: Rectangle { color: parent.down ? "#40FFFFFF" : (parent.hovered ? "#25FFFFFF" : "transparent") }
         onClicked: newWindowRequested()
     }
 
-    // todo 将这个标签删除， 或者将这个标签显示为当前文件名字
     Label {
         Layout.fillWidth: true
         text: currentTitle
         color: "white"
-        horizontalAlignment: Qt.AlignHCenter
+        elide: Text.ElideMiddle
+        horizontalAlignment: Text.AlignHCenter
     }
-    // 提供相应的功能接口，可以预留用作装饰
-    Button {
-        text: "⋮"
-        background: Rectangle { color: "transparent" }
+
+    ToolButton {
+        id: menuButton
+        text: "☰"
+        palette.buttonText: "#FFFFFF"
+        ToolTip.visible: hovered
+        ToolTip.text: qsTr("菜单")
+        background: Rectangle { color: parent.down ? "#40FFFFFF" : (parent.hovered ? "#25FFFFFF" : "transparent") }
+        onClicked: overflowMenu.open(menuButton)
+
+        Menu {
+            id: overflowMenu
+
+            MenuItem {
+                action: root.aboutAction
+                enabled: root.aboutAction !== null
+            }
+
+            MenuSeparator {
+                visible: root.quitAction !== null
+            }
+
+            MenuItem {
+                action: root.quitAction
+                visible: root.quitAction !== null
+            }
+        }
     }
 }
