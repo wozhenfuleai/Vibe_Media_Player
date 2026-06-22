@@ -3,7 +3,6 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs
 import QtMultimedia
-import "./" as Local
 
 ApplicationWindow {
     visible: true
@@ -11,12 +10,9 @@ ApplicationWindow {
     height: 800
     title: "Vibe Media Player"
     color: "#363636"
-    // 内容：音乐播放器（逻辑核心位置）
-    Local.Content {
-        id: content
-    }
+
     // 使用本地 shim（真实逻辑由 C++ 提供）
-    Local.PlayerController {
+    PlayerController {
         id: playerController
     }
 

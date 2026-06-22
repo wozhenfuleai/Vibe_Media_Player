@@ -26,7 +26,7 @@ qt_add_qml_module(appVibe
         BottomControlBar.qml
         # Controller.qml
         Actions.qml
-        Content.qml
+        # Content.qml
         Dialog.qml
         ActionsLib.qml
         # Main.qml
