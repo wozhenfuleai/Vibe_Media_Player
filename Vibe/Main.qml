@@ -1,6 +1,7 @@
-import QtQuick
-import QtQuick.Controls
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtQuick.Dialogs
+import "./" as Local
 
 ApplicationWindow {
     id: window
@@ -11,7 +12,7 @@ ApplicationWindow {
     color: "#121212"
 
     // 内容：音乐播放器（逻辑核心位置）
-    Content {
+    Local.Content {
         id: content
     }
 
