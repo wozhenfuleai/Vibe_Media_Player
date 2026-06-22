@@ -15,8 +15,9 @@ RowLayout {
     spacing: 0
 
     MenuBar {
+        id: menuBar
         Layout.fillWidth: false
-        focusPolicy: Qt.ClickFocus
+        focusPolicy: Qt.NoFocus
 
         palette.window: "#1a1a1a"
         palette.windowText: "#ffffff"
@@ -30,38 +31,43 @@ RowLayout {
         }
 
         Menu {
+            id: fileMenu
             title: qsTr("文件(&F)")
 
             MenuItem {
-                visible: root.actions !== null
                 action: root.actions ? root.actions.open : null
+                text: root.actions ? action.text : qsTr("打开(&O)...")
+                onTriggered: { if (!root.actions) root.openFileRequested() }
             }
 
             MenuItem {
-                visible: root.actions === null
-                text: qsTr("打开(&O)...")
-                onTriggered: root.openFileRequested()
-            }
-
-            MenuItem {
-                visible: root.actions !== null
                 action: root.actions ? root.actions.newAction : null
             }
 
-
             MenuItem {
-                visible: root.actions !== null
                 action: root.actions ? root.actions.quit : null
             }
         }
 
         Menu {
+            id: helpMenu
             visible: root.actions !== null
             title: qsTr("帮助(&H)")
 
             MenuItem {
                 action: root.actions ? root.actions.about : null
             }
+        }
+    }
+
+    // 确保启动时菜单处于关闭状态
+    Timer {
+        interval: 200
+        running: true
+        repeat: false
+        onTriggered: {
+            helpMenu.close()
+            fileMenu.close()
         }
     }
 
