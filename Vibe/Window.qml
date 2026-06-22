@@ -10,7 +10,7 @@ ApplicationWindow {
     width: 1000
     height: 800
     title: "Vibe Media Player"
-    color: "#121212"
+    color: "#363636"
     // 内容：音乐播放器（逻辑核心位置）
     Local.Content {
         id: content
@@ -23,7 +23,7 @@ ApplicationWindow {
     FileDialog {
         id: openMediaDialog
         title: "选择一个媒体文件"
-        nameFilters: ["媒体文件 (*.mp4 *.mkv *.avi *.mov *.wmv *.mp3 *.wav *.flac)", "所有文件 (*)"]
+        nameFilters: ["媒体文件 (*.mp4 *.mkv *.avi *.mov *.wmv *.mp3 *.wav *.flac *)", "所有文件 (*)"]
         onAccepted: {
             playerController.probeFile(selectedFile)
             playerController.loadFile(selectedFile)
@@ -35,18 +35,20 @@ ApplicationWindow {
     Rectangle {
         anchors.fill: parent
         anchors.margins: 0
-        color: "#000000"
-        border.color: "#ffffff"
-        border.width: 1
+        color: "#363636"//#1E1E1E"
+        //border.color: "#9999CC"
+        //border.width: 1
+        //radius: 10
+        //clip: true
         // 整体布局
         ColumnLayout {
             anchors.fill: parent
-            anchors.margins: 16
+            anchors.margins: 4
             spacing: 0
 
 
             TopTitleBar {
-                Layout.preferredHeight: 30
+                Layout.preferredHeight: 20
                 Layout.fillWidth: true
                 currentTitle: playerController.currentFileName === "" ? "视频播放" : playerController.currentFileName
                 onOpenFileRequested: openMediaDialog.open()
@@ -56,9 +58,17 @@ ApplicationWindow {
             Rectangle {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                color: "#645757"
-                border.color: "#ffffff"
+                color: "#363636"
+                //border.color: "#9999CC"
                 border.width: 1
+                radius: 8
+                clip: true
+                /*
+                Label{
+                    id: playerAreaHelp
+                    text: "Click for openning"
+                    anchors.CenterIn: parent
+                }*/
 
                 VideoOutput {
                     id: videoOutput
