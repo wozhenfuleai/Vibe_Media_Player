@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Dialogs
+import Vibe 1.0
 import "./" as Local
 
 ApplicationWindow {
@@ -10,6 +11,24 @@ ApplicationWindow {
     height: 800
     title: "Vibe Media Player"
     color: "#121212"
+
+    Actions {
+        id: actions
+    }
+
+    AboutDialog {
+        id: aboutDialog
+    }
+
+    Connections {
+        target: actions.open
+        function onTriggered() { fileDialog.open() }
+    }
+
+    Connections {
+        target: actions.about
+        function onTriggered() { aboutDialog.open() }
+    }
 
     // 内容：音乐播放器（逻辑核心位置）
     Local.Content {
@@ -37,7 +56,6 @@ ApplicationWindow {
         audioOutput: content.audioOutput
         window: window
         fileName: content.fileName
-        // 信号处理槽（openFile信号发出的时候调用open函数）
-        onOpenFile: fileDialog.open()
+        actions: actions
     }
 }

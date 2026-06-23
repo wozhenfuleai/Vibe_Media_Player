@@ -1,10 +1,11 @@
+// 组件：底部控制栏BcakControlBar
 import QtQuick.Controls 2.15
 import QtQuick 2.15
 import QtQuick.Layouts 1.3
 import QtMultimedia 5.15
 
 
-// 底部控制栏BcakControlBar
+
 ColumnLayout {
     // 支持两种模式：传入 controller (`player`) 或直接传入 `mediaPlayer`
     property var player
@@ -39,6 +40,7 @@ ColumnLayout {
 
     PlaySlider {
         player: parent.player ? parent.player : playerShim
+        window: parent.window
     }
     // 音量控制行  should be extraceted as a document
     VolumeSlider {
@@ -46,23 +48,3 @@ ColumnLayout {
         audioOutput: parent.audioOutput
     }
 }
-/*
-// 【修改】底部控制栏：由双行 ColumnLayout 合并为单行 RowLayout
-RowLayout {
-    id: root
-
-    required property MediaPlayer mediaPlayer
-    required property AudioOutput audioOutput
-    required property Window window
-
-    spacing: 0
-
-    PlaySlider {
-        Layout.fillWidth: true
-        mediaPlayer: root.mediaPlayer
-        audioOutput: root.audioOutput
-        window: root.window
-    }
-}*/
-
-//TopTitleBar

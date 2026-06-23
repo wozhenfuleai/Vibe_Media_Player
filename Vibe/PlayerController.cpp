@@ -1,3 +1,4 @@
+//该文件用于实现核心类： 音视频播放控制器
 #include "PlayerController.h"
 #include <QFileInfo>
 #include <QAudioOutput>

@@ -22,12 +22,11 @@ qt_add_qml_module(appVibe
         Window.qml
         PlaySlider.qml
         VolumeSlider.qml
-        TopTitleBar.qml
+        TopMenuBar.qml
         BottomControlBar.qml
         # Controller.qml
         Actions.qml
-
-        Dialog.qml
+        AboutDialog.qml
         ActionsLib.qml
         # Main.qml
 
