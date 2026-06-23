@@ -69,7 +69,7 @@ ApplicationWindow {
                     anchors.fill: parent
                     fillMode: VideoOutput.PreserveAspectFit
                 }
-                //未加载媒体时，中间显示文本和按钮，点击后会打开文件选择对话框
+                //再加打开媒体文件按钮，未加载媒体时，中间显示文本和按钮，点击后会打开文件选择对话框
                 ColumnLayout {
                     anchors.centerIn: parent
                     spacing: 16
