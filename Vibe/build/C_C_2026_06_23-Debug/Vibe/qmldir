@@ -1,0 +1,14 @@
+module Vibe
+typeinfo appVibe.qmltypes
+prefer :/qt/qml/Vibe/
+Window 254.0 Window.qml
+PlaySlider 254.0 PlaySlider.qml
+VolumeSlider 254.0 VolumeSlider.qml
+TopTitleBar 254.0 TopTitleBar.qml
+BottomControlBar 254.0 BottomControlBar.qml
+Actions 254.0 Actions.qml
+Content 254.0 Content.qml
+Dialog 254.0 Dialog.qml
+ActionsLib 254.0 ActionsLib.qml
+depends QtQuick
+

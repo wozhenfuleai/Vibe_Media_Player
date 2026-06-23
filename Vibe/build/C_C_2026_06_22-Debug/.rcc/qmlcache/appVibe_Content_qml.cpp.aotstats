@@ -1,0 +1,28 @@
+[
+    {
+        "moduleFiles": [
+            {
+                "entries": [
+                    {
+                        "codegenSuccessful": false,
+                        "column": 40,
+                        "durationMicroseconds": 2563,
+                        "errorMessage": "Cannot load property fileNameFromUrl from const QMetaObject.",
+                        "functionName": "fileName",
+                        "line": 19
+                    },
+                    {
+                        "codegenSuccessful": true,
+                        "column": 19,
+                        "durationMicroseconds": 114,
+                        "errorMessage": "",
+                        "functionName": "fill",
+                        "line": 10
+                    }
+                ],
+                "filePath": "/root/GitHub/Vibe_Media_Player_Wu/Vibe/Content.qml"
+            }
+        ],
+        "moduleId": "Vibe(appVibe)"
+    }
+]

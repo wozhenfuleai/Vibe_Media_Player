@@ -70,13 +70,25 @@ Rectangle {
                 font.pixelSize: 24
             }
 
-            // 标签：提醒作用，类似placeholder占位符
-            Label {
+            // 未打开文件时的占位提示与打开按钮
+            ColumnLayout {
                 anchors.centerIn: parent
+                spacing: 16
                 visible: root.mediaPlayer.source.toString() === ""
-                text: "请打开媒体文件"
-                color: "#888888"
-                font.pixelSize: 18
+
+                Label {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: "请打开媒体文件"
+                    color: "#888888"
+                    font.pixelSize: 18
+                }
+
+                Button {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: "打开"
+                    background: Rectangle { color: "transparent" }
+                    onClicked: root.openFile()
+                }
             }
 
             // 鼠标区域（有媒体文件的时候激活）—— 用于暂停和播放
