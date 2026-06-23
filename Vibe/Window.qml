@@ -1,15 +1,57 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.3
+
+//// This is the application's main window应用主窗口
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 import QtQuick.Dialogs
 import QtMultimedia
 
+
+
 ApplicationWindow {
+    id: window
     visible: true
     width: 1000
     height: 800
-    title: "Vibe Media Player"
-    color: "#363636"
+
+    title: Qt.application.name.length > 0 ? Qt.application.name : qsTr("Vibe Media Player")
+    color: "#000000"
+
+    readonly property bool isFullscreen: visibility === Window.FullScreen
+
+    function toggleFullscreen() {
+        visibility = isFullscreen ? Window.Windowed : Window.FullScreen
+    }
+
+    Actions {
+        id: actions
+    }
+
+    AboutDialog {
+        id: aboutDialog
+    }
+
+    Connections {
+        target: actions.open
+        function onTriggered() { openMediaDialog.open() }
+    }
+
+    Connections {
+        target: actions.newAction
+        function onTriggered() { playerController.openNewWindow() }
+    }
+
+    Connections {
+        target: actions.about
+        function onTriggered() { aboutDialog.open() }
+    }
+
+    Shortcut {
+        sequence: "Escape"
+        enabled: window.isFullscreen
+        onActivated: window.visibility = Window.Windowed
+    }
+
 
     // 使用本地 shim（真实逻辑由 C++ 提供）
     PlayerController {
@@ -18,9 +60,12 @@ ApplicationWindow {
 
     FileDialog {
         id: openMediaDialog
-        title: "选择一个媒体文件"
 
-        nameFilters: ["媒体文件 (*.mp4 *.mkv *.avi *.mov *.wmv *.mp3 *.wav *.flac *)", "所有文件 (*)"]
+        title: qsTr("打开媒体文件")
+        nameFilters: [
+            qsTr("媒体文件 (*.mp4 *.mkv *.avi *.mov *.wmv *.mp3 *.wav *.flac *.aac *.ogg *.m4a *.wma)"),
+            qsTr("所有文件 (*)")
+        ]
 
         onAccepted: {
             playerController.probeFile(selectedFile)
@@ -29,39 +74,46 @@ ApplicationWindow {
         }
     }
 
-    // 播放器主体背景
+    Component.onCompleted: Qt.callLater(function() { videoArea.forceActiveFocus() })
+
     Rectangle {
         anchors.fill: parent
-        anchors.margins: 0
 
-        color: "#1E1E1E"
-        //border.color: "#9999CC"
-        //border.width: 1
-        //radius: 10
-        //clip: true
-        // 整体布局
+        color: "#000000"
+        border.color: window.isFullscreen ? "transparent" : "#ffffff"
+        border.width: window.isFullscreen ? 0 : 1
+
         ColumnLayout {
             anchors.fill: parent
-            anchors.margins: 4
+            anchors.margins: window.isFullscreen ? 0 : 16
             spacing: 0
 
-
-            TopTitleBar {
-                Layout.preferredHeight: 20
+            TopMenuBar {
+                Layout.preferredHeight: 36
                 Layout.fillWidth: true
-                currentTitle: playerController.currentFileName === "" ? "视频播放" : playerController.currentFileName
-                onOpenFileRequested: openMediaDialog.open()
-                onNewWindowRequested: playerController.openNewWindow()
+                visible: !window.isFullscreen
+                actions: actions
+                currentTitle: playerController.currentFileName === ""
+                              ? qsTr("未选择音视频文件")
+                              : qsTr("正在播放：")+playerController.currentFileName
             }
-            // 视频显示区域
+
             Rectangle {
+                id: videoArea
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+//<<<<<<< HEAD
                 color: "#363636"
                 //border.color: "#9999CC"
                 border.width: 0
                 radius: 8
                 clip: true
+//=======
+                focus: true
+//                color: "#000000"
+                border.color: window.isFullscreen ? "transparent" : "#ffffff"
+//                border.width: window.isFullscreen ? 0 : 1
+//>>>>>>> feature/core
 
                 VideoOutput {
                     id: videoOutput
@@ -70,25 +122,34 @@ ApplicationWindow {
                     fillMode: VideoOutput.PreserveAspectFit
                 }
 
+                MouseArea {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton
+                    onDoubleClicked: window.toggleFullscreen()
+                }
+
                 Component.onCompleted: playerController.setVideoOutput(videoOutput)
             }
 
             BottomControlBar {
                 Layout.fillWidth: true
                 spacing: 20
+                visible: !window.isFullscreen
                 player: playerController
+                window: window
             }
 
             Label {
                 Layout.fillWidth: true
+                visible: !window.isFullscreen
                 color: "#d0d0d0"
-                elide: Label.ElideRight
+                elide: Text.ElideMiddle
                 text: playerController.lastError === ""
-                      ? (playerController.mediaInfoJson === "" ? "FFmpeg 解析结果：等待文件..." : "FFmpeg 解析结果已更新（JSON 长度: " + playerController.mediaInfoJson.length + "）")
-                      : ("FFmpeg 解析失败: " + playerController.lastError)
+                      ? (playerController.mediaInfoJson === ""
+                         ? qsTr("FFmpeg 解析结果：等待文件...")
+                         : qsTr("FFmpeg 解析结果已更新（JSON 长度: %1）").arg(playerController.mediaInfoJson.length))
+                      : qsTr("FFmpeg 解析失败: %1").arg(playerController.lastError)
             }
-
-
         }
     }
 }
