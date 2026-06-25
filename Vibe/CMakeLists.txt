@@ -38,6 +38,15 @@ qt_add_qml_module(appVibe
     SOURCES
         PlayerController.cpp
         PlayerController.h
+
+)
+
+# 添加资源，用于图片显示
+qt_add_resources(appVibe "static_res"
+    PREFIX "/"
+    FILES
+        res/icons/logo_higher_res.png
+        res/icons/logo_lower_res.png
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -55,6 +64,10 @@ target_link_libraries(appVibe
     PRIVATE Qt6::Quick
     Qt6::Multimedia
     Qt6::QuickDialogs2
+    Qt6::Core
+    Qt6::Gui
+    Qt6::Qml
+    Qt6::Quick
 )
 
 include(GNUInstallDirs)

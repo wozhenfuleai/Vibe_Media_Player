@@ -14,6 +14,7 @@ ApplicationWindow {
     width: 1000
     height: 800
 
+
     title: Qt.application.name.length > 0 ? Qt.application.name : qsTr("Vibe Media Player")
     color: "#000000"
 
@@ -98,6 +99,8 @@ ApplicationWindow {
                               : qsTr("正在播放：")+playerController.currentFileName
             }
 
+
+
             Rectangle {
                 id: videoArea
                 Layout.fillWidth: true
@@ -150,6 +153,7 @@ ApplicationWindow {
                          : qsTr("FFmpeg 解析结果已更新（JSON 长度: %1）").arg(playerController.mediaInfoJson.length))
                       : qsTr("FFmpeg 解析失败: %1").arg(playerController.lastError)
             }
+
         }
     }
 }
