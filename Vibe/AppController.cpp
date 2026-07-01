@@ -61,3 +61,8 @@ void AppController::openMediaFile(const QUrl &url)
     m_playerController->loadFile(url);
     m_playerController->play();
 }
+
+void AppController::quitApplication()
+{
+    m_app.quit();
+}

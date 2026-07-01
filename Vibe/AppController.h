@@ -18,6 +18,7 @@ public:
 
     Q_INVOKABLE void openNewWindow();
     Q_INVOKABLE void openMediaFile(const QUrl &url);
+    Q_INVOKABLE void quitApplication();
 
 private:
     void initializeApplicationMetadata();

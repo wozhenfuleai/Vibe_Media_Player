@@ -22,6 +22,8 @@ qt_add_qml_module(appVibe
     URI Vibe
     QML_FILES
         Window.qml
+        Content.qml
+        Dialogs.qml
         PlaySlider.qml
         VolumeSlider.qml
         TopMenuBar.qml
@@ -34,8 +36,6 @@ qt_add_qml_module(appVibe
 
         AboutDialog.qml
 
-        ActionsLib.qml
-        # Main.qml
 
     SOURCES
         MediaProbeService.cpp

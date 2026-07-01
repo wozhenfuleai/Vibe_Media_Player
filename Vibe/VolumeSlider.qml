@@ -30,7 +30,7 @@ RowLayout {
             }
         }
     }
-
+    //音量按钮
     Button {
         id: volumeButton
         implicitWidth: 36
@@ -78,7 +78,7 @@ RowLayout {
         horizontalAlignment: Text.AlignHCenter
     }
 
-    // ljh  logic insertion  ----- need view
+
     Item {
         Layout.fillWidth: true
         Rectangle {
