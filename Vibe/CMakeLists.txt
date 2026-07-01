@@ -38,6 +38,8 @@ qt_add_qml_module(appVibe
         # Main.qml
 
     SOURCES
+        MediaProbeService.cpp
+        MediaProbeService.h
         PlayerController.cpp
         PlayerController.h
 

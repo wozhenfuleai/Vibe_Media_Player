@@ -4,9 +4,9 @@
 #include <QMediaPlayer>//用到了 Qt 元对象系统（Q_OBJECT 宏），必须看到完整类定义，前置声明不够
 class QAudioOutput;
 class QObject;
-class QProcess;
 class QString;
 class QUrl;
+class MediaProbeService;
 
 class PlayerController : public QObject
 {
@@ -46,6 +46,7 @@ signals:
 public:
     // 构造函数
     explicit PlayerController(QObject *parent = nullptr);
+    void setProbeService(MediaProbeService *probeService);
     // 属性读取接口
     bool isPlaying() const;
     int duration() const;
@@ -94,9 +95,6 @@ public:
     // 【新增】提供给 QML，用来接收前端的视频画布
     Q_INVOKABLE void setVideoOutput(QObject *output);
 
-    // 【新增】打开新窗口
-    Q_INVOKABLE void openNewWindow();
-
 private slots:
     // 处理 QMediaPlayer 内部状态改变的槽函数
     void onPlaybackStateChanged(QMediaPlayer::PlaybackState state);
@@ -104,10 +102,8 @@ private slots:
     void onDurationChanged(qint64 duration);
     // 专门处理媒体加载状态的槽函数
     void onMediaStatusChanged(QMediaPlayer::MediaStatus status);
-    // ffprobe 进程结束槽
-    void onProbeFinished(int exitCode, QProcess::ExitStatus exitStatus);
-    // ffprobe 启动失败/运行时错误槽
-    void onProbeErrorOccurred(QProcess::ProcessError error);
+    void onProbeMediaInfoReady(const QString &json);
+    void onProbeError(const QString &message);
 private:
     // 内部工具函数：将毫秒转换为 mm:ss 格式
     QString formatTime(int ms) const;
@@ -115,13 +111,12 @@ private:
     // 核心多媒体组件
     QMediaPlayer *m_player;
     QAudioOutput *m_audioOutput;
-    QProcess *m_probeProcess;
+    MediaProbeService *m_probeService;
 
     // 内部状态保存
     bool m_isMediaLoaded;
     QString m_currentFileName;
     bool m_shouldAutoPlay;
-    QString m_probeProgram;
     QString m_mediaInfoJson;
     QString m_lastError;
 };

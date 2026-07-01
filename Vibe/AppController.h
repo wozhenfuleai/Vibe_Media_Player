@@ -3,6 +3,8 @@
 #include <QObject>
 
 class QGuiApplication;
+class MediaProbeService;
+class PlayerController;
 class QQmlApplicationEngine;
 
 class AppController : public QObject
@@ -12,6 +14,8 @@ class AppController : public QObject
 public:
     explicit AppController(QGuiApplication &app, QObject *parent = nullptr);
 
+    Q_INVOKABLE void openNewWindow();
+
 private:
     void initializeApplicationMetadata();
     void initializeQmlEngine();
@@ -19,4 +23,6 @@ private:
 private:
     QGuiApplication &m_app;
     QQmlApplicationEngine *m_engine;
+    MediaProbeService *m_probeService;
+    PlayerController *m_playerController;
 };

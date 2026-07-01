@@ -39,7 +39,7 @@ ApplicationWindow {
 
     Connections {
         target: actions.newAction
-        function onTriggered() { playerController.openNewWindow() }
+        function onTriggered() { appController.openNewWindow() }
     }
 
     Connections {
@@ -51,12 +51,6 @@ ApplicationWindow {
         sequence: "Escape"
         enabled: window.isFullscreen
         onActivated: window.visibility = Window.Windowed
-    }
-
-
-    // 使用本地 shim（真实逻辑由 C++ 提供）
-    PlayerController {
-        id: playerController
     }
 
     FileDialog {
