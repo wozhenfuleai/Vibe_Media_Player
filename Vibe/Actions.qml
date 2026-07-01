@@ -12,7 +12,6 @@ Item {
     property alias quit: _quit
     property alias about: _about
 
-    readonly property bool isWindows: Qt.platform.os === "windows"
     readonly property bool isLinux: Qt.platform.os === "linux"
 
     Action {

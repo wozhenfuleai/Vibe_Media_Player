@@ -12,6 +12,10 @@ qt_add_executable(appVibe
     main.cpp
     AppController.cpp
     AppController.h
+    MediaProbeService.cpp
+    MediaProbeService.h
+    PlayerController.cpp
+    PlayerController.h
 
 )
 
@@ -36,12 +40,6 @@ qt_add_qml_module(appVibe
 
         AboutDialog.qml
 
-
-    SOURCES
-        MediaProbeService.cpp
-        MediaProbeService.h
-        PlayerController.cpp
-        PlayerController.h
 
 )
 

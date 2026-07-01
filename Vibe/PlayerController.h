@@ -1,6 +1,5 @@
 //该文件用于定义核心类： 音视频播放控制器
 #pragma once
-#include <QtQml>
 #include <QMediaPlayer>//用到了 Qt 元对象系统（Q_OBJECT 宏），必须看到完整类定义，前置声明不够
 class QAudioOutput;
 class QObject;
@@ -11,7 +10,6 @@ class MediaProbeService;
 class PlayerController : public QObject
 {
     Q_OBJECT
-    QML_ELEMENT
     // 是否正在播放
     Q_PROPERTY(bool isPlaying READ isPlaying NOTIFY playingChanged)
     // 持续时间 ms

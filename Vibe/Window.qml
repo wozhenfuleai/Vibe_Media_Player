@@ -34,9 +34,7 @@ ApplicationWindow {
 
     header: TopMenuBar {
         actions: actions
-        currentTitle: playerController.currentFileName === ""
-                      ? qsTr("未选择音视频文件")
-                      : qsTr("正在播放：") + playerController.currentFileName
+        currentTitle: content.fileName
     }
 
     Connections {
@@ -83,6 +81,7 @@ ApplicationWindow {
             spacing: 0
 
             Content {
+                id: content
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 player: playerController

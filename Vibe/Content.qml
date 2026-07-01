@@ -10,6 +10,10 @@ Item {
     required property var player
     required property var window
 
+    readonly property string fileName: root.player.currentFileName === ""
+                                     ? qsTr("未选择音视频文件")
+                                     : qsTr("正在播放：") + root.player.currentFileName
+
     Component.onCompleted: Qt.callLater(function() { videoArea.forceActiveFocus() })
 
     Rectangle {
