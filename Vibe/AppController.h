@@ -2,6 +2,8 @@
 
 #include <QObject>
 
+class QUrl;
+
 class QGuiApplication;
 class MediaProbeService;
 class PlayerController;
@@ -15,6 +17,7 @@ public:
     explicit AppController(QGuiApplication &app, QObject *parent = nullptr);
 
     Q_INVOKABLE void openNewWindow();
+    Q_INVOKABLE void openMediaFile(const QUrl &url);
 
 private:
     void initializeApplicationMetadata();

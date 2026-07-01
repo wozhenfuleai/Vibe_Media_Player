@@ -62,11 +62,7 @@ ApplicationWindow {
             qsTr("所有文件 (*)")
         ]
 
-        onAccepted: {
-            playerController.probeFile(selectedFile)
-            playerController.loadFile(selectedFile)
-            playerController.play()
-        }
+        onAccepted: appController.openMediaFile(selectedFile)
     }
 
     Component.onCompleted: Qt.callLater(function() { videoArea.forceActiveFocus() })
