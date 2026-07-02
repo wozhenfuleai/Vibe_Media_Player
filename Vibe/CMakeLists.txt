@@ -10,6 +10,12 @@ qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(appVibe
     main.cpp
+    AppController.cpp
+    AppController.h
+    MediaProbeService.cpp
+    MediaProbeService.h
+    PlayerController.cpp
+    PlayerController.h
 
 )
 
@@ -20,6 +26,8 @@ qt_add_qml_module(appVibe
     URI Vibe
     QML_FILES
         Window.qml
+        Content.qml
+        Dialogs.qml
         PlaySlider.qml
         VolumeSlider.qml
         TopMenuBar.qml
@@ -32,12 +40,6 @@ qt_add_qml_module(appVibe
 
         AboutDialog.qml
 
-        ActionsLib.qml
-        # Main.qml
-
-    SOURCES
-        PlayerController.cpp
-        PlayerController.h
 
 )
 

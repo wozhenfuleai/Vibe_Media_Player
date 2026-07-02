@@ -9,47 +9,13 @@ import QtMultimedia 5.15
 RowLayout {
     id: root
 
-    // 接受任意对象作为 audioOutput（shim 环境下为 QtObject）
-    property var audioOutput
+    required property var player
 
     // 新增紧凑模式：嵌入底部单行控制栏时使用
     property bool compact: false
-
-// <<<<<<< HEAD
-//     property real savedVolume: 0.7
-//     // 组成是：按钮，滑动条，以及一个普通的 Item 用作填充物（注释保留，旧实现已弃用）
-//     property var player
-
-//     // 开启紧凑模式
-//     spacing: compact ? 4 : 8
-
-//     Button {
-//         // 静音按钮
-//         id: muteButton
-//         Layout.preferredWidth: compact ? 28 : 36
-//         Layout.preferredHeight: compact ? 28 : 36
-//         ToolTip.visible: hovered
-//         //M快捷键逻辑
-//         /*ToolTip.text: root.audioOutput.volume > 0 ? "静音 (M)" : "取消静音 (M)"
-//         onClicked: {
-//             if (root.audioOutput.volume > 0) {
-//                 root.savedVolume = root.audioOutput.volume
-//                 root.audioOutput.volume = 0
-//             } else {
-//                 root.audioOutput.volume = root.savedVolume > 0 ? root.savedVolume : 0.7
-//             }
-//         }*/
-//         background: Rectangle {
-//             radius: compact ? 14 : 18
-//             color: muteButton.down ? "#40FFFFFF" : (muteButton.hovered ? "#25FFFFFF" : "transparent")
-//         }
-//     }
-// =======
     property real savedVolume: 70
-    property var player
 
     spacing: compact ? 4 : 8
-// >>>>>>> feature/core
 
     // 音量滚动slider
     Slider {
@@ -57,16 +23,14 @@ RowLayout {
         Layout.fillWidth: !compact
         from: 0
         to: 100
-        value: audioOutput ? Math.round(audioOutput.volume * 100) : (player ? player.volume : 0)
+        value: player ? player.volume : 0
         onMoved: {
             if (player && typeof player.volume !== 'undefined') {
                 player.volume = Math.round(value)
-            } else if (audioOutput) {
-                audioOutput.volume = Math.round(value) / 100
             }
         }
     }
-
+    //音量按钮
     Button {
         id: volumeButton
         implicitWidth: 36
@@ -76,8 +40,6 @@ RowLayout {
         text: {
             if (player && typeof player.volume !== "undefined")
                 return player.volume > 0 ? "🔉" : "🔇"
-            if (audioOutput)
-                return audioOutput.volume > 0 ? "🔉" : "🔇"
             return "🔉"
         }
         contentItem: Text {
@@ -101,13 +63,6 @@ RowLayout {
                 } else {
                     player.volume = root.savedVolume > 0 ? root.savedVolume : 70
                 }
-            } else if (audioOutput) {
-                if (audioOutput.volume > 0) {
-                    root.savedVolume = Math.round(audioOutput.volume * 100)
-                    audioOutput.volume = 0
-                } else {
-                    audioOutput.volume = (root.savedVolume > 0 ? root.savedVolume : 70) / 100
-                }
             }
         }
     }
@@ -115,8 +70,7 @@ RowLayout {
     // 紧凑模式下隐藏百分比文字，节省横向空间
     Label {
         visible: !root.compact
-        text: root.audioOutput ? Math.round(root.audioOutput.volume * 100) + "%" : (player && typeof player.volume !== 'undefined' ? Math.round(player.volume) + "%" : "0%")
-        // color: Actions.textPrimary
+        text: player && typeof player.volume !== 'undefined' ? Math.round(player.volume) + "%" : "0%"
         color: "white"
         font.family: "monospace"
         font.pixelSize: 12
@@ -124,7 +78,7 @@ RowLayout {
         horizontalAlignment: Text.AlignHCenter
     }
 
-    // ljh  logic insertion  ----- need view
+
     Item {
         Layout.fillWidth: true
         Rectangle {
